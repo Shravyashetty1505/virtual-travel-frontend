@@ -564,32 +564,6 @@ input:focus, select:focus {
 </div>
 
 <script>
-function switchForm(mode) {
-  const registerForm = document.getElementById('registerForm');
-  const loginForm = document.getElementById('loginForm');
-  const toggleBtns = document.querySelectorAll('.toggle-btn');
-  
-  if (mode === 'register') {
-    registerForm.classList.add('active');
-    loginForm.classList.remove('active');
-    toggleBtns[0].classList.add('active');
-    toggleBtns[1].classList.remove('active');
-  } else {
-    loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-    toggleBtns[1].classList.add('active');
-    toggleBtns[0].classList.remove('active');
-  }
-  
-  document.getElementById('regError').classList.remove('show');
-  document.getElementById('loginError').classList.remove('show');
-}
-
-function togglePassword(id) {
-  const input = document.getElementById(id);
-  input.type = input.type === 'password' ? 'text' : 'password';
-}
-
 // Registration
 document.getElementById('registerForm').onsubmit = async function(e) {
   e.preventDefault();
@@ -624,7 +598,7 @@ document.getElementById('registerForm').onsubmit = async function(e) {
   }
   
   try {
-    const res = await fetch('/api/register', {
+    const res = await fetch('https://virtual-travel-backend.onrender.com/api/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({name, dob, email, password: pass})
@@ -633,7 +607,7 @@ document.getElementById('registerForm').onsubmit = async function(e) {
     
     if (data.success) {
       document.querySelector('.container').classList.add('success');
-      alert('Registration successful! Please log in.');
+      alert('✅ Registration successful! Please log in.');
       switchForm('login');
       this.reset();
     } else {
@@ -655,7 +629,7 @@ document.getElementById('loginForm').onsubmit = async function(e) {
   const errorEl = document.getElementById('loginError');
   
   try {
-    const res = await fetch('/api/login', {
+    const res = await fetch('https://virtual-travel-backend.onrender.com/api/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({identifier, password})
@@ -663,7 +637,8 @@ document.getElementById('loginForm').onsubmit = async function(e) {
     const data = await res.json();
     
     if (data.success) {
-      window.location.href = '/dashboard.html';
+      alert('✅ Login successful!');
+      window.location.href = 'dashboard.html';
     } else {
       errorEl.textContent = data.error;
       errorEl.classList.add('show');
@@ -674,5 +649,6 @@ document.getElementById('loginForm').onsubmit = async function(e) {
   }
 };
 </script>
+
 </body>
 </html>
